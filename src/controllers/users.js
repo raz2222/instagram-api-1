@@ -1,5 +1,6 @@
 const md5 = require('md5');
 const User = require('../models/user');
+const config = require('../config/env/index');
 const ERROR_DUPLICATE_VALUE = 11000;
 const DURATION_60D = 60 * 60 * 24 * 60 * 1000;
 
@@ -56,7 +57,7 @@ class Users {
 				res.sendStatus(401);
 				return;
 			}
-			res.cookie('ins_user', user._id, { maxAge: DURATION_60D, httpOnly: true });
+			res.cookie(config.cookieName, user._id, { maxAge: DURATION_60D, httpOnly: true });
 			res.json(user).send();
 		} catch(err) {
 			res.sendStatus(500);

@@ -1,6 +1,20 @@
-function auth(req, res, next) {
-	console.log(req.cookies);
-	res.sendStatus(400);
+const User = require('../models/user');
+const { cookieName } = require('../config/env/index');
+
+async function auth(req, res, next) {
+	const userId = req.cookies[cookieName];
+	if (!userId) {
+		res.sendStatus(403);
+		return;
+	}
+
+	const user = await User.findById(userId);
+	if (!user) {
+		res.sendStatus(403);
+		return;
+	}
+
+	next();
 }
 
 module.exports = auth;
