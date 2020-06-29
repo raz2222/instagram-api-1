@@ -64,6 +64,10 @@ class Users {
 		}
 	}
 
+	async me(req, res) {
+		res.json(req.user).send();
+	}
+
 }
 
 module.exports = new Users();

@@ -14,6 +14,7 @@ async function auth(req, res, next) {
 		return;
 	}
 
+	req.user = user;
 	next();
 }
 

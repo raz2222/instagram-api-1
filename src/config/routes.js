@@ -8,6 +8,7 @@ routes.get('/users', users.getAll);
 routes.put('/users', users.create);
 routes.get('/users/check', users.check);
 routes.post('/users/login', users.login);
+routes.get('/users/me', auth, users.me);
 
 routes.put('/posts', auth, posts.create);
 
