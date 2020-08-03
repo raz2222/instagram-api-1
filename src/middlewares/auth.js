@@ -1,21 +1,25 @@
-const User = require('../models/user');
-const { cookieName } = require('../config/env/index');
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const { cookieName } = require("../config/env/index");
 
 async function auth(req, res, next) {
-	const userId = req.cookies[cookieName];
-	if (!userId) {
-		res.sendStatus(403);
-		return;
-	}
+  const token = req.cookies[cookieName];
+  if (!token) {
+    res.sendStatus(403);
+    return;
+  }
+  try {
+    const payload = jwt.verify(token, secret);
+    const user = await User.findById(payload.id);
+    if (!user) {
+      res.sendStatus(403);
+      return;
+    }
 
-	const user = await User.findById(userId);
-	if (!user) {
-		res.sendStatus(403);
-		return;
-	}
-
-	req.user = user;
-	next();
+    req.user = user;
+    next();
+  } catch (err) {
+    res.sendStatus(403);
+  }
 }
-
 module.exports = auth;
